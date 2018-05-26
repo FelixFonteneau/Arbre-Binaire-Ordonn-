@@ -107,6 +107,36 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
     }
   }
 
+  public void supprimer(C clef) throws ClefNonTrouveeException, NoeudPrincipalException{
+    try{
+      System.out.println(" valeur :"+this.valeur());
+      if(clef.compareTo(this.clef())>0){
+        if( clef.compareTo(sad.clef()) == 0 ){
+          sad = arbreVide;
+          return;
+        }
+        sad.supprimer(clef);
+      }
+
+      if(clef.compareTo(this.clef())<0){
+        if( clef.compareTo(sag.clef()) == 0 ){
+          sag = arbreVide;
+          return;
+        }
+        sag.supprimer(clef);
+      }
+
+    }catch(ArbreVideException ex){
+      //si on recherche dans un arbre vide il n'y a pas la clef dans l'arbre
+      //on envoi une exception.
+      throw new ClefNonTrouveeException();
+    }
+
+    //impossible de supprimer le premier noeud de l'arbre car on ne peut pas
+    //lui assigner une valeur finale. On renvoi une exception.
+    throw new NoeudPrincipalException();
+  }
+
 
 
 
