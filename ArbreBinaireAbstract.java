@@ -1,18 +1,19 @@
-public abstract class ArbreBinaireAbstract<T> implements ArbreBinaire<T> {
+@SuppressWarnings("unchecked")
 
-  public abstract T valeur() throws ArbreVideException;
+public abstract class ArbreBinaireAbstract<C extends Comparable<C>, V> implements ArbreBinaire<C,V> {
+
+  public abstract V valeur() throws ArbreVideException;
+  public abstract C clef() throws ArbreVideException;
   public abstract ArbreBinaire sag() throws ArbreVideException;
   public abstract ArbreBinaire sad() throws ArbreVideException;
   public abstract boolean estVide();
 
 
-
- 
   public void ecrire(){
     ecrireR(this,0);
   }
 
-  private void ecrireR(ArbreBinaire<T> a, int d){
+  private void ecrireR(ArbreBinaire<C,V> a, int d){
     try{
 
       int offset = 3;
