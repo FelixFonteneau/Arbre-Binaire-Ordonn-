@@ -112,6 +112,7 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
       System.out.println(" valeur :"+this.valeur());
       if(clef.compareTo(this.clef())>0){
         if( clef.compareTo(sad.clef()) == 0 ){
+
           sad = arbreVide;
           return;
         }
@@ -131,10 +132,6 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
       //on envoi une exception.
       throw new ClefNonTrouveeException();
     }
-
-    //impossible de supprimer le premier noeud de l'arbre car on ne peut pas
-    //lui assigner une valeur finale. On renvoi une exception.
-    throw new NoeudPrincipalException();
   }
 
 
