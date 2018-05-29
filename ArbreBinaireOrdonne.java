@@ -168,7 +168,6 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
           try{
             if(sag.sad().estVide() && sag.sag().estVide()){
               this.sag = arbreVide;
-
             }else if(sag.sad().estVide()){
               this.sag = sag.sag();
             }else if(sag.sag().estVide()){
@@ -199,33 +198,14 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
       while (!(succ.sag().estVide()) ){
         succ = succ.sag;
       }
-      a.element = new Element(succ.clef(),succ.valeur());
-      if (!(succ.sad().estVide())){
-        succ = succ.sad;
-        //remplacerV(a.sad, succ.sad());
-      }else {
-        succ = arbreVide;
-        System.out.println("r av");
-        //remplacerV(a.sad, arbreVide);
-      }
-
+      Element tmp = new Element(succ.clef(),succ.valeur());
+      try{
+        a.supprimer(succ.clef());
+      }catch (Exception e) {}
+      a.element = tmp;
     }catch (ArbreVideException e2) {    }
   }
 
-  private void remplacerV(ArbreBinaireOrdonne a, ArbreBinaireOrdonne b){
-    try{
-      if(!(a.sag().estVide())){
-        remplacerV(a.sag,b);
-        System.out.println("passe ");
-      }
-      else {
-        System.out.println("remplaces");
-        a = b;
-      }
-    }catch (ArbreVideException e) {
-      a = b;
-    }
-  }
 
 
 
