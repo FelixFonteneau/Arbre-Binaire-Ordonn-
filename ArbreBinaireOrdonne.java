@@ -20,7 +20,7 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
   public static final ArbreBinaireOrdonne arbreVide = new ArbreBinaireOrdonne();
 
   private Element<C,V> element;
-  private ArbreBinaireOrdonne<C,V> sag, sad;
+  public ArbreBinaireOrdonne<C,V> sag, sad;
 
 
 
@@ -107,6 +107,8 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
     }
   }
 
+
+
   /*
     * La méthode supprimer supprime un élément grace à ça clef.
     * Si l'élément est trouvé, on le supprime. Si il n'est pas trouvé
@@ -125,46 +127,26 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
 
   //méthode récursive pour supprimer
   private void supprimerRecu(C clef) throws ClefNonTrouveeException{
+
+    //Cherche du noeud à supprimer dans le sous arbre droit.
     try{
       if(clef.compareTo(this.clef())>0){
+
+        //si c'est l'élément à supprimer, on regarde si il a des enfant
         if( clef.compareTo(sad.clef()) == 0 ){
 
           try{
+            //on regarde si l'élément à supprimer n'a pas d'enfant.
             if(sad.sad().estVide() && sad.sag().estVide()){
-              sad = arbreVide;
+              this.sad = arbreVide;
 
+              //si il en a on les remplaces.
             }else if(sad.sad().estVide()){
-              sad = sad.sag();
+              this.sad = sad.sag();
             }else if(sad.sag().estVide()){
-              sad = sad.sad();
+              this.sad = sad.sad();
             }else{
-              try{
-                ArbreBinaireOrdonne succ = sad.sad();
-                while (!(succ.sag().estVide()) ){
-                  succ = succ.sag();
-                }
-                sad.element = new Element(succ.clef(),succ.valeur());
-                if (!(succ.sad().estVide())){
-                  succ = succ.sad();
-                }else {
-                  succ = arbreVide;
-                }
-
-              }catch (ArbreVideException e2) {
-                ArbreBinaireOrdonne succ = sad.sag();
-                int i = 0;
-                while (!(succ.sad().estVide()) ){
-                  succ = succ.sad();
-                  i++;
-                }
-                sad.element = new Element(succ.clef(),succ.valeur());
-                if (!(succ.sag().estVide())){
-                  succ.element = new Element(succ.sag().clef(),succ.sag().valeur());
-                  //succ = succ.sag();
-                }else {
-                  succ = arbreVide;
-                }
-              }
+              supEnfant(this.sad);
             }
 
           }catch (ArbreVideException e1) {
@@ -175,9 +157,29 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
         sad.supprimerRecu(clef);
       }
 
+
+
+      //recherche de l'élément à supprimer dans le sous arbre gauche.
       if(clef.compareTo(this.clef())<0){
+
+        //si le sous arbre gauche est a supprimer, on regarde si il a des enfant
         if( clef.compareTo(sag.clef()) == 0 ){
-          sag = arbreVide;
+
+          try{
+            if(sag.sad().estVide() && sag.sag().estVide()){
+              this.sag = arbreVide;
+
+            }else if(sag.sad().estVide()){
+              this.sag = sag.sag();
+            }else if(sag.sag().estVide()){
+              this.sag = sag.sad();
+            }else{
+              supEnfant(this.sag);
+            }
+
+          }catch (ArbreVideException e1) {
+            sad = arbreVide;
+          }
           return;
         }
         sag.supprimerRecu(clef);
@@ -187,6 +189,41 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
       //si on recherche dans un arbre vide il n'y a pas la clef dans l'arbre
       //on envoie une exception.
       throw new ClefNonTrouveeException();
+    }
+  }
+
+
+  private void supEnfant(ArbreBinaireOrdonne a){
+    try{
+      ArbreBinaireOrdonne succ = a.sad();
+      while (!(succ.sag().estVide()) ){
+        succ = succ.sag;
+      }
+      a.element = new Element(succ.clef(),succ.valeur());
+      if (!(succ.sad().estVide())){
+        succ = succ.sad;
+        //remplacerV(a.sad, succ.sad());
+      }else {
+        succ = arbreVide;
+        System.out.println("r av");
+        //remplacerV(a.sad, arbreVide);
+      }
+
+    }catch (ArbreVideException e2) {    }
+  }
+
+  private void remplacerV(ArbreBinaireOrdonne a, ArbreBinaireOrdonne b){
+    try{
+      if(!(a.sag().estVide())){
+        remplacerV(a.sag,b);
+        System.out.println("passe ");
+      }
+      else {
+        System.out.println("remplaces");
+        a = b;
+      }
+    }catch (ArbreVideException e) {
+      a = b;
     }
   }
 
