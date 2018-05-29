@@ -14,7 +14,7 @@ import java.util.*;
   * jusqu'au tronc.
 */
 
-public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinaireAbstract<C,V> implements ArbreBinaire<C, V>{
+public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinaireDessine<C,V> implements ArbreBinaire<C, V>{
 
   //On déffinit la constante arbreVide
   public static final ArbreBinaireOrdonne arbreVide = new ArbreBinaireOrdonne();
@@ -107,16 +107,72 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
     }
   }
 
+  /*
+    * La méthode supprimer supprime un élément grace à ça clef.
+    * Si l'élément est trouvé, on le supprime. Si il n'est pas trouvé
+    * on  renvoie une ClefNonTrouveeException.
+    * Si l'élément est le noeud principal de l'arbre, il ne peut pas etre
+    * détruit donc on envoie une NoeudPrincipalException.
+  */
   public void supprimer(C clef) throws ClefNonTrouveeException, NoeudPrincipalException{
     try{
-      System.out.println(" valeur :"+this.valeur());
+      //dans le cas ou l'utilisateur veut supprimer le noeud pricipal.
+      if ( clef.compareTo(this.clef()) == 0 ) throw new NoeudPrincipalException();
+    }catch(ArbreVideException e){} // ce catch est nécessaire pour le compilateur mais l'utilisateur ne peut pas créer d'abre vide donc le premier noeud existe.
+
+    supprimerRecu(clef);
+  }
+
+  //méthode récursive pour supprimer
+  private void supprimerRecu(C clef) throws ClefNonTrouveeException{
+    try{
       if(clef.compareTo(this.clef())>0){
         if( clef.compareTo(sad.clef()) == 0 ){
 
-          sad = arbreVide;
+          try{
+            if(sad.sad().estVide() && sad.sag().estVide()){
+              sad = arbreVide;
+
+            }else if(sad.sad().estVide()){
+              sad = sad.sag();
+            }else if(sad.sag().estVide()){
+              sad = sad.sad();
+            }else{
+              try{
+                ArbreBinaireOrdonne succ = sad.sad();
+                while (!(succ.sag().estVide()) ){
+                  succ = succ.sag();
+                }
+                sad.element = new Element(succ.clef(),succ.valeur());
+                if (!(succ.sad().estVide())){
+                  succ = succ.sad();
+                }else {
+                  succ = arbreVide;
+                }
+
+              }catch (ArbreVideException e2) {
+                ArbreBinaireOrdonne succ = sad.sag();
+                int i = 0;
+                while (!(succ.sad().estVide()) ){
+                  succ = succ.sad();
+                  i++;
+                }
+                sad.element = new Element(succ.clef(),succ.valeur());
+                if (!(succ.sag().estVide())){
+                  succ.element = new Element(succ.sag().clef(),succ.sag().valeur());
+                  //succ = succ.sag();
+                }else {
+                  succ = arbreVide;
+                }
+              }
+            }
+
+          }catch (ArbreVideException e1) {
+            sad = arbreVide;
+          }
           return;
         }
-        sad.supprimer(clef);
+        sad.supprimerRecu(clef);
       }
 
       if(clef.compareTo(this.clef())<0){
@@ -124,12 +180,12 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
           sag = arbreVide;
           return;
         }
-        sag.supprimer(clef);
+        sag.supprimerRecu(clef);
       }
 
     }catch(ArbreVideException ex){
       //si on recherche dans un arbre vide il n'y a pas la clef dans l'arbre
-      //on envoi une exception.
+      //on envoie une exception.
       throw new ClefNonTrouveeException();
     }
   }
@@ -138,26 +194,32 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
 
 
 //--- Ici on implémente les fonctions de base d'un arbre binnaire ---//
+
+  //on renvoie ici la valeur du noeud pricipal de l'arbre.
   public V valeur() throws ArbreVideException{
     if(estVide()) throw new ArbreVideException();
     return this.element.valeur();
   }
 
+  //on renvoie ici la clef du noeud pricipal de l'arbre.
   public C clef() throws ArbreVideException{
     if(estVide()) throw new ArbreVideException();
     return this.element.clef();
   }
 
+  //verifie si l'arbre est vide.
   public boolean estVide(){
     return (this == arbreVide);
   }
 
-  public ArbreBinaire sag() throws ArbreVideException{
+  //donne le sous-arbre droit.
+  public ArbreBinaireOrdonne sag() throws ArbreVideException{
     if(estVide()) throw new ArbreVideException();
     return this.sag;
   }
 
-  public ArbreBinaire sad() throws ArbreVideException{
+  //donne le sous-arbre gauche.
+  public ArbreBinaireOrdonne sad() throws ArbreVideException{
     if(estVide()) throw new ArbreVideException();
     return this.sad;
   }

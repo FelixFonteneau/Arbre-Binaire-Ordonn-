@@ -1,6 +1,9 @@
 import PaD.*;
 import java.awt.*;
 
+@SuppressWarnings("unchecked")
+
+
 public abstract class ArbreBinaireDessine<C extends Comparable<C>, V> implements ArbreBinaire<C,V> {
   public abstract V valeur() throws ArbreVideException;
   public abstract C clef() throws ArbreVideException;
@@ -8,26 +11,23 @@ public abstract class ArbreBinaireDessine<C extends Comparable<C>, V> implements
   public abstract ArbreBinaire sad() throws ArbreVideException;
   public abstract boolean estVide();
 
-  //on déffinit la plache à dessin, notre interface graphique de nos arbres.
-    public static final PlancheADessin pad = new PlancheADessin(1000,500,true);
-
-    public double milieu_x = pad.getLargeur()/2;
-    public double milieu_y = pad.getHauteur()/2;
 
 
-    public void noeud(int generation, V valeur, double x, double y, boolean sad, boolean sag, PlancheADessin pad){
+
+    public void noeud(int generation, V valeur, double x, double y, boolean sag, boolean sad, PlancheADessin pad){
   		Color gris = new Color(200,200,200);
-  		Font f = new Font("TimesRoman", Font.PLAIN, 18);
-  		double lx= pad.getLongueur()/4 - 10; // projeté sur l'axe x de la branche
-  		double ly= pad.getLargeur()/4 - 10; // projeté sur l'axe y de la branche
+  		Font f = new Font("TimesRoman", Font.PLAIN, (int) (18/(generation*0.2+1)) >= 10 ? (int) (18/(generation*0.2+1)) : 10 );
+  		double lx = pad.getLargeur()/5/(Math.pow(2,generation)); // projeté sur l'axe x de la branche
+  		double ly = pad.getHauteur()/5/(Math.pow(2,generation)); // projeté sur l'axe y de la branche
 
 
-  		Dessinable brancheD = new Ligne(x,y,x+lx,y+ly,PlancheADessin.NOIR,3);
-   		Dessinable brancheG = new Ligne(x,y,x-lx,y+ly,PlancheADessin.NOIR,3);
+  		Dessinable brancheG = new Ligne(x,y,x-lx,y+ly,PlancheADessin.NOIR,2);
+   		Dessinable brancheD = new Ligne(x,y,x+lx,y+ly,PlancheADessin.NOIR,2);
 
-  		Dessinable noeudPrinc  = new EllipsePleine(x,y,50/(1+generation),30/(1+generation),gris);
+  		Dessinable noeudPrinc  = new EllipsePleine(x,y,50/(1+0.5*generation),30/(1+0.5*generation),gris);
 
-  		Dessinable texte = new Texte(x-25/(1+generation),y-15/(1+generation),valeur.toString(),f);
+
+  		Dessinable texte = new Texte(x-25/(1+0.5*generation),y-15/(1+0.5*generation),valeur == null ? "null" : valeur.toString(),f);
 
   		if (sad) pad.ajouter(brancheD);
   		if (sag) pad.ajouter(brancheG);
@@ -37,6 +37,88 @@ public abstract class ArbreBinaireDessine<C extends Comparable<C>, V> implements
 
 
 
+    public void dessinerArbre(PlancheADessin pad){
+      double milieu_x = pad.getLargeur()/2;
+      double y = pad.getHauteur()/10;
+
+      boolean arbreG;
+      boolean arbreD;
+      V valeur;
+
+
+      try {
+        arbreG = sag().estVide();
+      }catch (ArbreVideException e) {
+        arbreG = false;
+      }
+
+      try {
+        arbreD = sad().estVide();
+      }catch (ArbreVideException e) {
+        arbreD = false;
+      }
+
+      try{
+        valeur = valeur();
+      }catch (ArbreVideException e) {
+        valeur = null;
+      }
+
+
+      noeud(0,valeur, milieu_x,y, !(arbreG), !(arbreD), pad);
+
+      if( !(arbreG) ){
+        try{
+          dessinerArbreRecu(sag(),1,milieu_x - pad.getLargeur()/5, pad.getHauteur()/10+pad.getHauteur()/5, pad);
+        }catch (ArbreVideException e) {}
+      }
+      if( !(arbreD) ){
+        try{
+          dessinerArbreRecu(sad(),1,milieu_x + pad.getLargeur()/5, pad.getHauteur()/10+pad.getHauteur()/5, pad);
+        }catch (ArbreVideException e) {}
+      }
+
+    }
+
+
+    private void dessinerArbreRecu(ArbreBinaire a,int generation, double x, double y , PlancheADessin pad){
+      boolean arbreG;
+      boolean arbreD;
+      V valeur;
+
+      try {
+        arbreG = a.sag().estVide();
+      }catch (ArbreVideException e) {
+        arbreG = false;
+      }
+
+      try {
+        arbreD = a.sad().estVide();
+      }catch (ArbreVideException e) {
+        arbreD = false;
+      }
+
+      try{
+        valeur = (V) a.valeur();
+      }catch (ArbreVideException e) {
+        valeur = null;
+      }
+
+      noeud(generation, valeur, x, y, !(arbreG), !(arbreD), pad);
+
+
+      if( !(arbreG) ){
+        try{
+          dessinerArbreRecu(a.sag(), generation+1, x - pad.getLargeur()/5/(Math.pow(2,generation)), y + pad.getHauteur()/5/(Math.pow(2,generation)), pad );
+        }catch(ArbreVideException e){}
+      }
+
+      if( !(arbreD) ){
+        try{
+          dessinerArbreRecu( a.sad(),generation+1, x + pad.getLargeur()/5/(Math.pow(2,generation)), y + pad.getHauteur()/5/(Math.pow(2,generation)),pad );
+        }catch(ArbreVideException e){}
+      }
+    }
 
 
 }
