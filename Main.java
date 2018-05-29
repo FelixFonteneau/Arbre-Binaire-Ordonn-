@@ -27,10 +27,17 @@ public class Main {
     a.ajout(new Element<Integer,String>(1," un "));
     a.ajout(new Element<Integer,String>(-3," le moins 3"));
     a.ajout(new Element<Integer,String>(-4," le moins 4"));
-    a.ajout(new Element<Integer,String>(5," le cinq "));
+    a.ajout(new Element<Integer,String>(10," le dix "));
+    a.ajout(new Element<Integer,String>(7," le 7 "));
+
     a.ajout(new Element<Integer,String>(3," le 3 "));
 
+    a.ajout(new Element<Integer,String>(5," le 5 "));
+
     a.ajout(new Element<Integer,String>(4," le quatre "));
+    a.ajout(new Element<Integer,String>(6," le 6 "));
+
+
     a.ajout(new Element<Integer,String>(-1," le - un  "));
 
     a.dessinerArbre(pad);

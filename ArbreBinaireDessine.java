@@ -13,8 +13,12 @@ public abstract class ArbreBinaireDessine<C extends Comparable<C>, V> implements
 
 
 
+    /*
+      * La méthode noeud est une méthode élémentaire qui permet de tracer un noeud et ses branches,
+      * en fonction de certains paramètres afin d'afficher un noeud.
 
-    public void noeud(int generation, V valeur, double x, double y, boolean sag, boolean sad, PlancheADessin pad){
+    */
+    private void noeud(int generation, V valeur, double x, double y, boolean sag, boolean sad, PlancheADessin pad){
   		Color gris = new Color(200,200,200);
   		Font f = new Font("TimesRoman", Font.PLAIN, (int) (18/(generation*0.2+1)) >= 10 ? (int) (18/(generation*0.2+1)) : 10 );
   		double lx = pad.getLargeur()/5/(Math.pow(2,generation)); // projeté sur l'axe x de la branche
@@ -35,7 +39,10 @@ public abstract class ArbreBinaireDessine<C extends Comparable<C>, V> implements
   	}
 
 
-
+    /*
+      * Cette méthode permet de dessiner un arbre récursivement en dessinant
+      * chaque noeud.
+    */
 
     public void dessinerArbre(PlancheADessin pad){
       double milieu_x = pad.getLargeur()/2;
@@ -46,6 +53,7 @@ public abstract class ArbreBinaireDessine<C extends Comparable<C>, V> implements
       V valeur;
 
 
+      //Les try et catch ci-dessous ne sont pas esthétiques mais nécessaires afin d'éviter les exceptions. 
       try {
         arbreG = sag().estVide();
       }catch (ArbreVideException e) {

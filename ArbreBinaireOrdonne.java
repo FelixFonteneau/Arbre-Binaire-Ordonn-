@@ -2,8 +2,8 @@ import java.util.*;
 
 @SuppressWarnings("unchecked")
 /*
-  * Classe pricipale des objects de type arbre binnaire
-  * Elle implémente les méthodes d'Arbre binnaire
+  * Classe pricipale des objects de type arbre binaire
+  * Elle implémente les méthodes d'Arbre binaire
   * Puis elle dévellope des méthode d'ajout, de recherche et de suppression.
   *
   * Elle ne peut pas heriter de ArbreBinaireChaine car les méthodes citées précédemments
@@ -12,6 +12,9 @@ import java.util.*;
   * Contrairement à la classe que nous avons vu en td, notre structure d'Arbres
   * Se construit du tronc jusqu'aux feuilles et non pas des feuilles
   * jusqu'au tronc.
+  *
+  * Elle hérite d'ArbreBinaireDessine afin d'avoir un visuel des arbres
+  * construits dans une PaD.
 */
 
 public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinaireDessine<C,V> implements ArbreBinaire<C, V>{
@@ -125,7 +128,13 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
     supprimerRecu(clef);
   }
 
-  //méthode récursive pour supprimer
+
+  /*
+    * Pour supprimer, on va appeler récursivement
+
+
+
+  */
   private void supprimerRecu(C clef) throws ClefNonTrouveeException{
 
     //Cherche du noeud à supprimer dans le sous arbre droit.
@@ -148,7 +157,7 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
             }else{
               supEnfant(this.sad);
             }
-
+            
           }catch (ArbreVideException e1) {
             sad = arbreVide;
           }
@@ -156,8 +165,6 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
         }
         sad.supprimerRecu(clef);
       }
-
-
 
       //recherche de l'élément à supprimer dans le sous arbre gauche.
       if(clef.compareTo(this.clef())<0){
