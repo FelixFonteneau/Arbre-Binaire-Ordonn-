@@ -2,11 +2,11 @@ import java.util.*;
 
 @SuppressWarnings("unchecked")
 /*
-  * Classe pricipale des objects de type arbre binaire
-  * Elle implémente les méthodes d'Arbre binaire
-  * Puis elle dévellope des méthode d'ajout, de recherche et de suppression.
+  * Classe pricipale des objets de type ArbreBinaire
+  * Elle implémente les méthodes d'ArbreBinaire
+  * Puis elle développe les méthodes d'ajout, de recherche et de suppression.
   *
-  * Contrairement à la classe que nous avons vu en td, notre structure d'Arbres
+  * Contrairement à la classe que nous avons vu en td, notre structure d'Arbre
   * Se construit du tronc jusqu'aux feuilles et non pas des feuilles
   * jusqu'au tronc.
   *
@@ -16,7 +16,7 @@ import java.util.*;
 
 public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinaireDessine<C,V> implements ArbreBinaire<C, V>{
 
-  //On déffinit la constante arbreVide
+  //On définit la constante arbreVide
   public static final ArbreBinaireOrdonne arbreVide = new ArbreBinaireOrdonne();
 
   private Element<C,V> element;
@@ -25,21 +25,21 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
 
 
 //--- constructeur de classe ---//
-  //ce constructeur permet d'initiliser l'arbreVide.
+  //ce constructeur permet d'initialiser l'arbreVide.
   private ArbreBinaireOrdonne(){
     this.element = null;
     this.sag = null;
     this.sad = null;
   }
 
-  // c'est le seul constructeur public afin de creer un abre avec un seul noeud
+  // c'est le seul constructeur public afin de creer un arbre avec un seul noeud
   public ArbreBinaireOrdonne(Element<C,V> element){
     this(element, arbreVide, arbreVide);
   }
 
 
    //On met ce constructeur en privé car on ne veut pas que l'utilisateur
-   //créer des ArbresBinairOrdonne non ordonnés avec ce constructeur;
+   //créé des ArbreBinairOrdonne non ordonnés avec ce constructeur.
   private ArbreBinaireOrdonne(Element<C,V> noeud, ArbreBinaireOrdonne<C,V> gauche, ArbreBinaireOrdonne<C,V> droit){
     this.element = noeud;
     this.sag = (gauche == null) ? arbreVide : gauche;
@@ -47,14 +47,14 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
   }
 
 
-//--- Méthodes des arbres binnaire ordonnés ---//
+//--- Méthodes des Arbres binaire ordonnés ---//
 
 
   /*
-    * Dans la méthode ajout on prend un élément en entré et on l'insert dans l'arbre courant.
+    * Dans la méthode ajout on prend un élément en entrée et on l'insert dans l'arbre courant.
     * Cette méthode est récursive et va placer l'élément en fonction de sa clef.
     * On compare la clef de l'élément à ajouter à la clef de l'élément du noeud,
-    * Si elle est supérieure, on ajoute l'élément à l'arbre droit sinon à l'arbre gauche.=
+    * Si elle est supérieure, on ajoute l'élément à l'arbre droit sinon à l'arbre gauche.
   */
   public void ajout(Element<C,V> e) throws ElementDejaExistantException{
     if(e.clef().compareTo(this.element.clef())>0){
@@ -76,8 +76,7 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
         }
 
     }else{
-      //si l'élément qu'on veut ajouter à la meme clef qu'un element dans l'arbre
-      //on envoi une exception
+      //Si l'élément qu'on veut ajouter a la meme clef qu'un élément dans l'arbre, on envoie une exception.
       throw new ElementDejaExistantException();
     }
   }
@@ -85,11 +84,11 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
 
 
   /*
-    * Cette méthode recursive recherche un élément dans l'arbre ordonné.
+    * Cette méthode récursive recherche un élément dans l'arbre ordonné.
     * Si l'élément courant correspond à la clef donnée, on retourne cet élément
-    * Si la clef donnée est supérieur à la clef de l'élément courant on va
-    * rechercher dans le sad si il est non vide (si il est vide on envoi une exception)
-    * De même pour le sag si la clef est inférieure.
+    * Si la clef donnée est supérieure à la clef de l'élément courant on va
+    * rechercher dans le sad (sous-arbre droit) si il est non vide (si il est vide on envoie une exception)
+    * De même pour le sag (sous-arbre gauche) si la clef est inférieure.
   */
   public V recherche(C clef) throws ClefNonTrouveeException{
     try{
@@ -101,8 +100,8 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
       else return sag.recherche(clef);
 
     }catch(ArbreVideException ex){
-      //si on recherche dans un arbre vide il n'y a pas la clef dans l'arbre
-      //on envoi une exception.
+      //Si on effectue une recherche dans un arbre vide, il n'y a pas de clef dans l'arbre
+      //donc on envoie une exception.
       throw new ClefNonTrouveeException();
     }
   }
@@ -110,8 +109,8 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
 
 
   /*
-    * La méthode supprimer supprime un élément grace à ça clef.
-    * Si l'élément est trouvé, on le supprime. Si il n'est pas trouvé
+    * La méthode supprimer supprime un élément grace à sa clef.
+    * Si l'élément est trouvé, on le supprime. S'il n'est pas trouvé
     * on  renvoie une ClefNonTrouveeException.
     * Si l'élément est le noeud principal de l'arbre, il ne peut pas etre
     * détruit donc on envoie une NoeudPrincipalException.
@@ -145,7 +144,7 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
             if(sad.sad().estVide() && sad.sag().estVide()){
               this.sad = arbreVide;
 
-            //sinon on effectue des décallages avec ces sous-arbres.
+            //sinon on effectue des décalages avec ces sous-arbres.
             }else if(sad.sad().estVide()){
               this.sad = sad.sag();
             }else if(sad.sag().estVide()){
@@ -186,7 +185,7 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
       }
 
     }catch(ArbreVideException ex){
-      //si on recherche dans un arbre vide il n'y a pas la clef dans l'arbre
+      //si on recherche dans un arbre vide, il n'y a pas de clef dans l'arbre
       //on envoie une exception.
       throw new ClefNonTrouveeException();
     }
@@ -216,7 +215,7 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
 
 
 
-//--- Ici on implémente les fonctions de base d'un arbre binnaire ---//
+//--- Ici on implémente les fonctions de base d'un arbre binaire ---//
 
   //on renvoie ici la valeur du noeud pricipal de l'arbre.
   public V valeur() throws ArbreVideException{
@@ -230,7 +229,7 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
     return this.element.clef();
   }
 
-  //verifie si l'arbre est vide.
+  //vérifie si l'arbre est vide.
   public boolean estVide(){
     return (this == arbreVide);
   }
