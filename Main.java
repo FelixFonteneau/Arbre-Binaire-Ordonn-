@@ -23,19 +23,16 @@ public class Main {
     boolean arret = false;
     Scanner sc = new Scanner(System.in);
 
+    a.ajout(new Element<Integer,String>(5," le 5 "));
     a.ajout(new Element<Integer,String>(2," le deux "));
     a.ajout(new Element<Integer,String>(1," un "));
+    a.ajout(new Element<Integer,String>(3," le 3 "));
     a.ajout(new Element<Integer,String>(-3," le moins 3"));
     a.ajout(new Element<Integer,String>(-4," le moins 4"));
     a.ajout(new Element<Integer,String>(10," le dix "));
     a.ajout(new Element<Integer,String>(7," le 7 "));
+    a.ajout(new Element<Integer,String>(11," le 11 "));
 
-    a.ajout(new Element<Integer,String>(3," le 3 "));
-
-    a.ajout(new Element<Integer,String>(5," le 5 "));
-
-    a.ajout(new Element<Integer,String>(4," le quatre "));
-    a.ajout(new Element<Integer,String>(6," le 6 "));
 
 
     a.ajout(new Element<Integer,String>(-1," le - un  "));
@@ -83,6 +80,8 @@ public class Main {
           String val = spl[1];
           try{
             a.ajout(new Element<Integer,String>(clef,val));
+            continuer= false;
+            System.out.println("\nAjouté avec succes.");
 
 
 
@@ -111,6 +110,8 @@ public class Main {
           }
           try{
             a.supprimer(clef);
+            System.out.println("Element supprimé avec succes.");
+            continuer = false;
 
 
             //cas ou la clef est non trouvé
@@ -143,6 +144,7 @@ public class Main {
             System.out.println("\n\nLa valeur de l'élément à la clef : "+clef+"\n est : "+val);
             //cas ou la clef est non trouvé
             sc.nextLine();
+            continuer = false;
           }catch (ClefNonTrouveeException e) {
             System.out.println("\nAucun élément a été trouvé avec la clef : "+clef);
             continuer = recommencer(sc) ;
@@ -171,6 +173,7 @@ public class Main {
           }
           String val = spl[1];
           a = new ArbreBinaireOrdonne<Integer,String>(new Element<Integer,String>(clef,val));
+          continuer = false;
         } while (continuer);
 
 

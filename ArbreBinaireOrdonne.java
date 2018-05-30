@@ -6,9 +6,6 @@ import java.util.*;
   * Elle implémente les méthodes d'Arbre binaire
   * Puis elle dévellope des méthode d'ajout, de recherche et de suppression.
   *
-  * Elle ne peut pas heriter de ArbreBinaireChaine car les méthodes citées précédemments
-  * Utilisent de la récursion et nécessitent que sad et sag soient ordonnés.
-  *
   * Contrairement à la classe que nous avons vu en td, notre structure d'Arbres
   * Se construit du tronc jusqu'aux feuilles et non pas des feuilles
   * jusqu'au tronc.
@@ -130,26 +127,25 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
 
 
   /*
-    * Pour supprimer, on va appeler récursivement
-
+    * Pour supprimer, on va appeler récursivement la méthode jusqu'à trouver
+    * l'élément à supprimer. Si il existe, on va distinguer trois cas.
 
 
   */
-  private void supprimerRecu(C clef) throws ClefNonTrouveeException{
 
-    //Cherche du noeud à supprimer dans le sous arbre droit.
+  private void supprimerRecu(C clef) throws ClefNonTrouveeException{
     try{
+      //recherche de l'élément à supprimer dans le sad.
       if(clef.compareTo(this.clef())>0){
 
-        //si c'est l'élément à supprimer, on regarde si il a des enfant
+        //si c'est l'élément à supprimer, on regarde si il a des enfants.
         if( clef.compareTo(sad.clef()) == 0 ){
-
           try{
-            //on regarde si l'élément à supprimer n'a pas d'enfant.
+            //Si c'est une feuille on le supprime.
             if(sad.sad().estVide() && sad.sag().estVide()){
               this.sad = arbreVide;
 
-              //si il en a on les remplaces.
+            //sinon on effectue des décallages avec ces sous-arbres.
             }else if(sad.sad().estVide()){
               this.sad = sad.sag();
             }else if(sad.sag().estVide()){
@@ -157,7 +153,7 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
             }else{
               supEnfant(this.sad);
             }
-            
+
           }catch (ArbreVideException e1) {
             sad = arbreVide;
           }
@@ -166,10 +162,8 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
         sad.supprimerRecu(clef);
       }
 
-      //recherche de l'élément à supprimer dans le sous arbre gauche.
+      //même principe mais cette fois ci avec le sous-arbre gauche.
       if(clef.compareTo(this.clef())<0){
-
-        //si le sous arbre gauche est a supprimer, on regarde si il a des enfant
         if( clef.compareTo(sag.clef()) == 0 ){
 
           try{
@@ -198,7 +192,8 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
     }
   }
 
-
+  //Si l'élément à supprimer possède deux sous-arbres on utilise cette méthode
+  //afin d'effectuer un décallage entre les éléments.
   private void supEnfant(ArbreBinaireOrdonne a){
     try{
       ArbreBinaireOrdonne succ = a.sad();
@@ -212,6 +207,10 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
       a.element = tmp;
     }catch (ArbreVideException e2) {    }
   }
+
+
+
+
 
 
 
