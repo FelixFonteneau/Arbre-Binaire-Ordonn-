@@ -15,10 +15,6 @@ class Element<C extends Comparable<C>,V> {
 	   this.valeur = v;
 	}
 
-/*	public String toString() {
-	    return "(" + this.clef + "," + this.valeur + ")";
-	} */
-
 	C clef() { return  this.clef; }
 	V valeur() { return  this.valeur; }
 }
