@@ -17,8 +17,8 @@ public class Main {
     ArbreBinaireOrdonne<Integer,String> a = new ArbreBinaireOrdonne<Integer,String>(new Element<Integer,String>(0,"zero"));
 
 
-    //initialisation de planche a dessin.
-    PlancheADessin pad = new PlancheADessin(1300,800,true);
+    //initialisation de planche a dessin, on peut changer les paramètres d'initialisation
+    PlancheADessin pad = new PlancheADessin(1300,800);
 
     boolean arret = false;
     Scanner sc = new Scanner(System.in);
@@ -43,10 +43,10 @@ public class Main {
 
 
 
-    System.out.println("\n\n\n\n\n\n\nBienvenue sur l'interface graphique d'une arbre binaire ordonné.");
+    System.out.println("\n\n\n\n\n\n\nBienvenue sur l'interface graphique d'un arbre binaire ordonné.");
     sc.nextLine();
-    System.out.println("\n\nL'arbre est composé d'élément comportant une clef (permetant de les ordonner) et d'une valeur associée à la clef.");
-    System.out.println("Afin de simplifier l'utilisateur, la clef sera un entier relatif, et la valeur sera une chaine de caractères.");
+    System.out.println("\n\nL'arbre est composé d'éléments comportant une clef (permettant de les ordonner) et d'une valeur associée à la clef.");
+    System.out.println("Afin de simplifier le concept pour l'utilisateur, la clef sera un entier relatif, et la valeur sera une chaine de caractères.");
     System.out.println("Vous êtes en capacité d'effectuer quatre actions : \n");
     sc.nextLine();
 
@@ -56,15 +56,15 @@ public class Main {
       System.out.println("-> ajouter un élément à l'arbre, pour celà, entrez 'a'; ");
       System.out.println("-> supprimer un élément de l'arbre, pour celà, entrez 's'; ");
       System.out.println("-> rechercher un élément de l'arbre, pour celà, entrez 'r'. ");
-      System.out.println("-> Creer un nouvel arbre, pour celà, entrez 'n'.\n");
-      System.out.println("entrez 'stop' pour arreter\n");
+      System.out.println("-> créer un nouvel arbre, pour celà, entrez 'n'.\n");
+      System.out.println("Entrez 'stop' pour arreter\n");
       String str = sc.nextLine();
 
       //cas d'un ajout
       if(str.equals("a")){
         boolean continuer = false;
         do{
-          System.out.println("\n\n\nentrez la clef et la valeur de l'élément à insérer sous la forme suivant :  'clef,valeur' \nexemple :  3,le chiffre trois");
+          System.out.println("\n\n\nEntrez la clef et la valeur de l'élément à insérer sous la forme suivante :  'clef,valeur' \nexemple :  3,le chiffre trois");
           String str2 = sc.nextLine();
 
           String[] spl;
@@ -81,7 +81,7 @@ public class Main {
           try{
             a.ajout(new Element<Integer,String>(clef,val));
             continuer= false;
-            System.out.println("\nAjouté avec succes.");
+            System.out.println("\nAjouté avec succès.");
 
 
 
@@ -98,7 +98,7 @@ public class Main {
       }else if (str.equals("s")){
         boolean continuer = false;
         do{
-          System.out.println("\n\n\nentrez la clef de l'élément à supprimer sous la forme suivant : 'clef' \nexemple :  17");
+          System.out.println("\n\n\nEntrez la clef de l'élément à supprimer sous la forme suivante : 'clef' \nexemple :  17");
           String str2 = sc.nextLine();
           int clef;
           try{
@@ -110,17 +110,17 @@ public class Main {
           }
           try{
             a.supprimer(clef);
-            System.out.println("Element supprimé avec succes.");
+            System.out.println("Element supprimé avec succès.");
             continuer = false;
 
 
-            //cas ou la clef est non trouvé
+            //cas ou la clef est non trouvée
           }catch (ClefNonTrouveeException e) {
-            System.out.println("\nAucun élément a été trouvé avec la clef : "+clef);
+            System.out.println("\nAucun élément n'a été trouvé avec la clef : "+clef);
             continuer = recommencer(sc) ;
 
           }catch (NoeudPrincipalException e2){
-            System.out.println("\nATTENTION ! Le noeud principal ne peut pas être supprimer !");
+            System.out.println("\nATTENTION ! Le noeud principal ne peut pas être supprimé !");
             continuer = recommencer(sc) ;
           }
         }while(continuer);
@@ -129,13 +129,13 @@ public class Main {
       }else if(str.equals("r")){
         boolean continuer = false;
         do{
-          System.out.println("\n\n\nentrez la clef de l'élément à recherche sous la forme suivant : 'clef' \nexemple :  2");
+          System.out.println("\n\n\nEntrez la clef de l'élément à rechercher sous la forme suivante : 'clef' \nexemple :  2");
           String str2 = sc.nextLine();
           int clef;
           try{
             clef = Integer.parseInt(str2);
           }catch (Exception e) {
-            System.out.println("\n\nErreur d'écriture de la clef,");
+            System.out.println("\n\nErreur d'écriture de la clef");
             continuer = recommencer(sc) ;
             continue;
           }
@@ -146,7 +146,7 @@ public class Main {
             sc.nextLine();
             continuer = false;
           }catch (ClefNonTrouveeException e) {
-            System.out.println("\nAucun élément a été trouvé avec la clef : "+clef);
+            System.out.println("\nAucun élément n'a été trouvé avec la clef : "+clef);
             continuer = recommencer(sc) ;
           }
         }while(continuer);
@@ -179,7 +179,7 @@ public class Main {
 
 
       }else if(str.equals("stop")){
-        System.out.println("Arret du programe");
+        System.out.println("Arret du programme");
         System.exit(2);
       }
 
