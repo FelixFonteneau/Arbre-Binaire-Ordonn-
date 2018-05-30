@@ -1,9 +1,9 @@
 /*
-  * On déffinit ici la classe Element qui permet de
+  * On définit ici la classe Element qui permet de
   * structurer les données de nos arbres.
-  * Les objets de types Element ont une clef qui va permettre de
+  * Les objets de type Element ont une clef qui va permettre de
   * comparer plusieurs Elements afin de les trier dans l'arbre.
-  * A chaque Element, une valeur associé à cette clef.
+  * A chaque Element, une valeur est associée à cette clef.
 */
 
 class Element<C extends Comparable<C>,V> {
