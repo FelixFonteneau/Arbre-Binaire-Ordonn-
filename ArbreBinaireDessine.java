@@ -31,7 +31,7 @@ public abstract class ArbreBinaireDessine<C extends Comparable<C>, V> implements
 
   		Dessinable texte = new Texte(x-25/(1+0.5*generation),y-15/(1+0.5*generation),valeur == null ? "null" : valeur.toString(),f);
 
-      //ajout des éléments à la PAD
+      //ajout des éléments à la Planche A Dessin (PAD)
   		if (sad) pad.ajouter(brancheD);
   		if (sag) pad.ajouter(brancheG);
   		pad.ajouter(noeudPrinc,texte);
@@ -55,7 +55,7 @@ public abstract class ArbreBinaireDessine<C extends Comparable<C>, V> implements
       V valeur;
 
 
-      //Les try et catch ci-dessous ne sont pas esthétiques mais nécessaires afin d'éviter les exceptions.
+      //Les try et catch ci-dessous ne sont pas très esthétiques mais néanmoins nécessaires afin d'éviter les exceptions.
       try {
         arbreG = sag().estVide();
       }catch (ArbreVideException e) {
