@@ -54,7 +54,7 @@ public class ArbreBinaireOrdonne<C extends Comparable<C>, V> extends ArbreBinair
     * Dans la méthode ajout on prend un élément en entré et on l'insert dans l'arbre courant.
     * Cette méthode est récursive et va placer l'élément en fonction de sa clef.
     * On compare la clef de l'élément à ajouter à la clef de l'élément du noeud,
-    * Si elle est supérieure, on ajoute l'élément à l'arbre droit sinon à l'arbre gauche.
+    * Si elle est supérieure, on ajoute l'élément à l'arbre droit sinon à l'arbre gauche.=
   */
   public void ajout(Element<C,V> e) throws ElementDejaExistantException{
     if(e.clef().compareTo(this.element.clef())>0){
